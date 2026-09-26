@@ -1,0 +1,43 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class Pesanan extends Model
+{
+    use HasFactory;
+
+    protected $table = 'pesanan';
+    protected $primaryKey = 'id_pesanan';
+    protected $fillable = [
+        'id_meja', 'no_pesanan', 'nama_pelanggan',
+        'waktu_pesan', 'status_pesanan', 'total_harga',
+    ];
+
+    public function meja()
+    {
+        return $this->belongsTo(Meja::class, 'id_meja', 'id_meja');
+    }
+
+    public function detail()
+    {
+        return $this->hasMany(DetailPesanan::class, 'id_pesanan', 'id_pesanan');
+    }
+
+    public function pembayaran()
+    {
+        return $this->hasOne(Pembayaran::class, 'id_pesanan', 'id_pesanan');
+    }
+
+    public function logStatus()
+    {
+        return $this->hasMany(LogStatusPesanan::class, 'id_pesanan', 'id_pesanan');
+    }
+
+    public function struk()
+    {
+        return $this->hasOne(Struk::class, 'id_pesanan', 'id_pesanan');
+    }
+}
